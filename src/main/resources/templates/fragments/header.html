@@ -1,0 +1,46 @@
+<header th:fragment="header(form)">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/venda/list}">Histórico de Compra</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/produtos/list}">Produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/produtos/compraProdutos}">Compra de Produto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/pessoa/list}">Lista de Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/venda/carrinho}">Carrinho</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Cadastrar Cliente
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" th:href="@{/pessoaFisica/form}">Pessoa Física</a></li>
+                            <li><a class="dropdown-item" th:href="@{/pessoaJuridica/form}">Pessoa Juridíca</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <th:block th:replace="${form}"/>
+                <form th:action="@{/logout}" method="POST" class="d-flex">
+                    <button class="btn btn-outline-danger ms-2" type="submit">Sair</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>

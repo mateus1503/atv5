@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout :: layout(~{::head}, ~{::main}, ~{::header})">
+
+<head th:replace="fragments/head :: head(~{::link},~{::title})">
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" href="/css/list.css">
+    <style>
+        .list-group-item {
+            border-bottom: 1px solid #dee2e6; /* Linha divisória entre os itens */
+        }
+        .list-group-item:last-child {
+            border-bottom: none; /* Remove a borda do último item */
+        }
+        .list-group-item .btn-group .btn {
+            margin-left: 5px; /* Espaçamento entre os botões */
+        }
+    </style>
+</head>
+
+<header th:replace="fragments/header :: header(~{::form})">
+    <form th:object="${produtos}" method="post" action="/produtos/buscar" class="d-flex" role="search">
+        <input name="produto" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</header>
+
+<body>
+
+<main class="container mt-5">
+    <!-- Cabeçalho da página -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Lista de Produtos</h2>
+        <a th:href="@{/produtos/form}" class="btn btn-primary">
+            Adicionar Produto
+        </a>
+    </div>
+
+    <!-- Lista de produtos -->
+    <ul class="list-group">
+        <li th:each="produto : ${produtos}" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1" th:text="${produto.getDescricao()}"></h5>
+                <p class="mb-1" th:text="${produto.valorFormatado()}"></p>
+                <p class="mb-1 fw-bold"
+                   th:text="${produto.getStatus()} ? 'Ativo' : 'Inativo'"
+                   th:classappend="${produto.getStatus()} ? 'text-success' : 'text-danger'"></p>
+            </div>
+            <div class="btn-group" role="group" aria-label="Ações">
+                <a th:href="@{/produtos/edit/{id}(id=${produto.getId()})}" class="btn btn-outline-secondary btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                    </svg>
+                </a>
+                <a th:href="@{/produtos/alterarStatus/{id}(id=${produto.getId()})}"
+                   th:classappend="${produto.getStatus()} ? 'btn btn-outline-danger btn-sm' : 'btn btn-outline-success btn-sm'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi" viewBox="0 0 16 16"
+                         th:classappend="${produto.getStatus()} ? 'bi-x-lg' : 'bi-check-lg'">
+                        <path th:if="${produto.getStatus()}" d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                        <path th:unless="${produto.getStatus()}" d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                    </svg>
+                </a>
+            </div>
+        </li>
+    </ul>
+</main>
+
+</body>
+
+</html>

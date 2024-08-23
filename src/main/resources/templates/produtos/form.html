@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout :: layout(~{::head}, ~{::main}, ~{::header})">
+
+<head th:replace="fragments/head :: head(~{::link},~{::title})">
+    <title>Lista de Vendas</title>
+    <link rel="stylesheet" href="/css/formPessoa.css">
+</head>
+
+<header th:replace="fragments/header :: header(~{})"></header>
+
+<body>
+<main>
+<h1>Cadastro de Produto</h1>
+
+<div class="container1">
+    <div class="form-container">
+        <form th:action="${produto.id == null} ? @{/produtos/save} : @{/produtos/update}" th:object="${produto}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <label for="descricao">Descrição:</label>
+            <input class="form-control" id="descricao" type="text" th:field="*{descricao}" th:errorclass="is-invalid">
+            <label class="invalid-feedback" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></label>
+
+            <label for="valor">Valor:</label>
+            <input class="form-control" type="text" id="valor" th:field="*{valor}" th:errorclass="is-invalid">
+            <label class="invalid-feedback" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></label><br><br>
+
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" th:field="*{status}"  role="switch" id="flexSwitchCheckChecked" checked>
+                <label class="form-check-label" for="flexSwitchCheckChecked">Ativo</label>
+            </div>
+
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
+</div>
+
+</main>
+</body>
+</html>

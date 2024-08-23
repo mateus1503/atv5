@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="fragments/layout :: layout(~{::head}, ~{::main}, ~{::header})">
+
+<head th:replace="fragments/head :: head(~{},~{::title})">
+    <title>Lista de Vendas</title>
+</head>
+
+<header th:replace="fragments/header :: header(~{})"></header>
+
+<body>
+
+<main class="container mt-5">
+    <h4 class="mb-4" th:text="${msg}"></h4>
+
+    <!-- Tabela com informações da venda -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Detalhes do Cliente</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    <th>Data e Hora</th>
+                    <th>Nome</th>
+                    <th th:if="${venda.getPessoa() instanceof T(com.example.atv5.model.entity.PessoaFisica)}">CPF</th>
+                    <th th:unless="${venda.getPessoa() instanceof T(com.example.atv5.model.entity.PessoaFisica)}">CNPJ</th>
+                    <th>Telefone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${#temporals.format(venda.getData(), 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${venda.getPessoa().getNome()}"></td>
+                    <td th:if="${venda.getPessoa() instanceof T(com.example.atv5.model.entity.PessoaFisica)}" th:text="${venda.getPessoa().getCpf()}"></td>
+                    <td th:unless="${venda.getPessoa() instanceof T(com.example.atv5.model.entity.PessoaFisica)}" th:text="${venda.getPessoa().getCnpj()}"></td>
+                    <td th:text="${venda.getPessoa().getTelefone()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tabela com itens da venda -->
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Itens da Venda</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    <th>Descrição do Produto</th>
+                    <th>Quantidade</th>
+                    <th>Valor Unitário</th>
+                    <th>Valor Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${venda.getItensVenda()}">
+                    <td th:text="${item.getProduto().getDescricao()}"></td>
+                    <td th:text="${item.getQuantidade()}"></td>
+                    <td th:text="${item.precoUnitario()}"></td>
+                    <td th:text="${item.totalFormatado()}"></td>
+                </tr>
+                <tr class="fw-bolder">
+                    <td colspan="3" class="text-end">Total:</td>
+                    <td class="text-end" th:text="${venda.totalFormatado()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+</body>
+
+</html>
