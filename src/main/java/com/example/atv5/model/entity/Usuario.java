@@ -1,8 +1,10 @@
 package com.example.atv5.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,11 +21,15 @@ public class Usuario implements Serializable, UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Username é obrigatório")
+    @Column(unique = true)
     private String username;
 
+    @NotBlank(message = "Senha é obrigatória")
     private String password;
 
     @OneToOne
+    @JoinColumn(name = "pessoa_id")
     private Pessoa pessoa;
 
     @ManyToMany
@@ -64,3 +70,4 @@ public class Usuario implements Serializable, UserDetails {
         return true;
     }
 }
+

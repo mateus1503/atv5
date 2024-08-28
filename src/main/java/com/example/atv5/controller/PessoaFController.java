@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,22 +38,32 @@ public class PessoaFController {
     }
 
     @PostMapping("/save")
-    public ModelAndView save(PessoaFisica pessoaFisica){
-//        if (result.hasErrors()) {
-//            return new ModelAndView("/pessoaFisica/form");
-//        }
+    public ModelAndView save(@Valid PessoaFisica pessoaFisica, BindingResult result) {
+        // Verifica se há erros de validação, incluindo os da entidade Usuario
+        if (result.hasErrors()) {
+            return new ModelAndView("/pessoaFisica/form");
+        }
+
+        Usuario usuario = pessoaFisica.getUsuario();
+
+        // Verifica se o usuário já existe
+        if (usuarioRepository.findByUsername(usuario.getUsername()) != null) {
+            result.rejectValue("usuario.username", "error.usuario", "Usuário já existe");
+            return new ModelAndView("/pessoaFisica/form");
+        }
+
         Role role = roleRepository.findByNome("ROLE_USER");
 
-        Usuario usuario = new Usuario();
         usuario.setPessoa(pessoaFisica);
-        usuario.setUsername(pessoaFisica.getUsuario().getUsername());
-        usuario.setPassword(new BCryptPasswordEncoder().encode(pessoaFisica.getUsuario().getPassword()));
+        usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
         usuario.getRoles().add(role);
         usuarioRepository.save(usuario);
 
-        repository.savePessoaFisica(pessoaFisica);
+        repository.save(pessoaFisica);
         return new ModelAndView("redirect:/login");
     }
+
+
 
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable("id") Long id, ModelMap model) {

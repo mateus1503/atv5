@@ -17,7 +17,7 @@ public class PessoaFRepository {
     private EntityManager em;
 
 
-    public void savePessoaFisica(PessoaFisica pessoaFisica){
+    public void save(PessoaFisica pessoaFisica){
         em.persist(pessoaFisica);
     }
 

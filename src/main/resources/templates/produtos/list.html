@@ -1,20 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" th:replace="fragments/layout :: layout(~{::head}, ~{::main}, ~{::header})">
 
-<head th:replace="fragments/head :: head(~{::link},~{::title})">
+<head th:replace="fragments/head :: head(~{},~{::title})">
     <title>Lista de Produtos</title>
-    <link rel="stylesheet" href="/css/list.css">
-    <style>
-        .list-group-item {
-            border-bottom: 1px solid #dee2e6; /* Linha divisória entre os itens */
-        }
-        .list-group-item:last-child {
-            border-bottom: none; /* Remove a borda do último item */
-        }
-        .list-group-item .btn-group .btn {
-            margin-left: 5px; /* Espaçamento entre os botões */
-        }
-    </style>
 </head>
 
 <header th:replace="fragments/header :: header(~{::form})">
