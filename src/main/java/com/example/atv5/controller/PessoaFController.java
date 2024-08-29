@@ -39,31 +39,29 @@ public class PessoaFController {
 
     @PostMapping("/save")
     public ModelAndView save(@Valid PessoaFisica pessoaFisica, BindingResult result) {
-        // Verifica se há erros de validação, incluindo os da entidade Usuario
         if (result.hasErrors()) {
             return new ModelAndView("/pessoaFisica/form");
         }
 
         Usuario usuario = pessoaFisica.getUsuario();
 
-        // Verifica se o usuário já existe
         if (usuarioRepository.findByUsername(usuario.getUsername()) != null) {
             result.rejectValue("usuario.username", "error.usuario", "Usuário já existe");
             return new ModelAndView("/pessoaFisica/form");
         }
 
-        Role role = roleRepository.findByNome("ROLE_USER");
+        String roleName = usuario.getRoles().get(0).getNome(); // Captura a role selecionada
+        Role role = roleRepository.findByNome(roleName); // Busca a role correspondente no banco de dados
 
         usuario.setPessoa(pessoaFisica);
         usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
-        usuario.getRoles().add(role);
+        usuario.getRoles().clear();
+        usuario.getRoles().add(role); // Adiciona a role selecionada
         usuarioRepository.save(usuario);
 
         repository.save(pessoaFisica);
         return new ModelAndView("redirect:/login");
     }
-
-
 
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable("id") Long id, ModelMap model) {

@@ -47,6 +47,18 @@
                         <div class="invalid-feedback" th:if="${#fields.hasErrors('usuario.password')}" th:errors="*{usuario.password}"></div>
                     </div>
 
+                    <!-- Botões de Rádio para Seleção de Role -->
+                    <div class="mb-3">
+                        <label class="form-label">Tipo de Usuário</label>
+                        <div class="btn-group" role="group" aria-label="Seleção de Role">
+                            <input type="radio" class="btn-check" name="usuario.roles[0].nome" id="btnRoleUser" th:field="*{usuario.roles[0].nome}" value="ROLE_USER" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="btnRoleUser">Usuário</label>
+
+                            <input type="radio" class="btn-check" name="usuario.roles[0].nome" id="btnRoleAdmin" th:field="*{usuario.roles[0].nome}" value="ROLE_ADMIN" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnRoleAdmin">Administrador</label>
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Enviar</button>
                 </form>
             </div>
